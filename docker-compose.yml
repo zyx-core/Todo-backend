@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: todo-mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: Todo@12345
+      MYSQL_DATABASE: TodoDb
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-backend-api
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_CONNECTION_STRING=Server=db;Port=3306;Database=TodoDb;User=root;Password=Todo@12345;
+      - JWT_KEY=SuperSecretKey123456789
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
