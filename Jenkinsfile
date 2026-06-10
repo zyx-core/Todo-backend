@@ -5,7 +5,7 @@ pipeline {
     environment {
         IMAGE = "todo-backend-api:${BUILD_NUMBER}"
         NETWORK = "todo-net"
-        MYSQL_CONT = "todo-mysql"
+        MYSQL_CONT = "todo-mysql-db"
         API_CONT = "todo-backend-api"
  
         MYSQL_PWD = "Todo@12345"
