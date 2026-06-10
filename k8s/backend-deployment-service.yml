@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todo-backend
+  template:
+    metadata:
+      labels:
+        app: todo-backend
+    spec:
+      containers:
+      - name: todo-backend
+        image: ersdr.azurecr.io/todo-backend:latest
+        env:
+        - name: ConnectionStrings__DefaultConnection
+          value: "Server=todo-mysql-db;Database=TodoDb;User=root;Password=yourpassword;"
+        - name: Jwt__Key
+          value: "SuperSecretKeyForJwtTokenGenerationThatIsAtLeast256BitsLong!"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-backend
+spec:
+  selector:
+    app: todo-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
